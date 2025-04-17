@@ -35,17 +35,17 @@ class mainFrame(wx.App):
 	def setupPage1(self):
 		sizer = wx.BoxSizer(wx.VERTICAL)
 	#フォント
-		font_Title = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
-		font_text = wx.Font(13,wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+		self.font_Title = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+		self.font_text = wx.Font(13,wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 	#タイトルテキスト
 		title_text = wx.StaticText(self.page1, label='編集するエクセルのパスを設定', style=wx.TE_CENTER, pos=(100,50))
-		title_text.SetFont(font_Title)
+		title_text.SetFont(self.font_Title)
 	#内容
 		#ファイル選択ダイアログ
-		txt2 = wx.StaticText(self.page1, label='ファイル選択ダイアログから選択', style=wx.TE_CENTER, pos=(60,135))
-		txt2.SetFont(font_text)
-		self.txtbox1 = wx.TextCtrl(self.page1, value='', style=wx.TE_READONLY, pos=(300,130), size=(300,-1))
-		btn2 = wx.Button(self.page1, wx.ID_ANY, '...', pos=(600,130), size=(20,-1))
+		txt2 = wx.StaticText(self.page1, label='ファイル選択ダイアログから選択', style=wx.TE_CENTER, pos=(60,115))
+		txt2.SetFont(self.font_text)
+		self.txtbox1 = wx.TextCtrl(self.page1, value='', style=wx.TE_READONLY, pos=(300,110), size=(300,-1))
+		btn2 = wx.Button(self.page1, wx.ID_ANY, '...', pos=(600,110), size=(20,-1))
 		btn2.Bind(wx.EVT_BUTTON, self.clk_btn2)
 		self.page1.SetSizer(sizer)
 	def clk_btn2(self, event):
@@ -58,7 +58,13 @@ class mainFrame(wx.App):
 			path = self.path
 			wb = openpyxl.load_workbook(f'{path}')
 			sheetname_list = wb.sheetnames
-			self.showsheetnames(sheetname_list)
+			title_text = wx.StaticText(self.page1, label='シート名:', style=wx.TE_CENTER, pos=(60,180))
+			title_text.SetFont(self.font_Title)
+			x = 0
+			for i in sheetname_list:
+				txt3 = wx.StaticText(self.page1, label=f'{sheetname_list[x]}', style=wx.TE_CENTER, pos=(170,180+x*20))
+				txt3.SetFont(self.font_text)
+				x = x+1
 		dialog.Destroy()
 		self.page1.SetSizer(sizer)
 	
@@ -68,17 +74,10 @@ class mainFrame(wx.App):
 		font_Title = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 		font_text = wx.Font(13,wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 	#タイトル
-		title_text = wx.StaticText(self.page2, label='シート名', style=wx.TE_CENTER, pos=(100,50))
-		title_text.SetFont(font_Title)
+		
 	#内容
 		self.page2.SetSizer(sizer)
-	def showsheetnames(self, sheetname_list):
-		font_text = wx.Font(13,wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
-		x = 0
-		for i in sheetname_list:
-			txt3 = wx.StaticText(self.page2, label=f'{sheetname_list[x]}', style=wx.TE_CENTER, pos=(300,50+x*20))
-			txt3.SetFont(font_text)
-			x = x+1
+		
 
 def mainapp():
 	application = mainFrame()
