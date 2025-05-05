@@ -1,4 +1,4 @@
+import frame
+
 if __name__ == '__main__':
-    
-    from .frame import mainapp
-    mainapp()
+    frame.mainapp()
